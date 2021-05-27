@@ -9,7 +9,9 @@ import com.zengtengpeng.autoCode.utils.BuildUtils;
 import com.zengtengpeng.autoCode.utils.MyStringUtils;
 import com.zengtengpeng.jdbc.bean.Bean;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ public interface BuildServiceImpl {
     default BuildServiceImpl before(AutoCodeConfig autoCodeConfig, BuildJavaConfig buildJavaConfig) {
         StringBuffer content = buildJavaConfig.getContent();
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
-        MyStringUtils.append(content, "package %s.%s.impl;", globalConfig.getParentPack(), globalConfig.getPackageService());
+        MyStringUtils.append(content, "package %s.%s.%s.impl;", globalConfig.getParentPack(), globalConfig.getPackageService(), globalConfig.getParentType());
         return this;
     }
 
@@ -41,8 +43,8 @@ public interface BuildServiceImpl {
             imports = new ArrayList<>();
         }
         if (buildJavaConfig.getDefaultRealize()) {
-            imports.add(globalConfig.getParentPack() + "." + globalConfig.getPackageDao() + "." + bean.getTableName() + MyStringUtils.firstUpperCase(globalConfig.getPackageDao()));
-            imports.add(globalConfig.getParentPack() + "." + globalConfig.getPackageService() + "." + bean.getTableName() + MyStringUtils.firstUpperCase(globalConfig.getPackageService()));
+            imports.add(globalConfig.getParentPack() + "." + globalConfig.getPackageDao()+"."+globalConfig.getParentType() + "." + bean.getTableName() + MyStringUtils.firstUpperCase(globalConfig.getPackageDao()));
+            imports.add(globalConfig.getParentPack() + "." + globalConfig.getPackageService() +"."+globalConfig.getParentType()+ "." + bean.getTableName() + MyStringUtils.firstUpperCase(globalConfig.getPackageService()));
             imports.add("org.springframework.stereotype.Service");
             imports.add("org.springframework.transaction.annotation.Transactional");
             imports.add("javax.annotation.Resource");
@@ -71,8 +73,12 @@ public interface BuildServiceImpl {
         if(MyStringUtils.isEmpty(buildJavaConfig.getRemark())){
             buildJavaConfig.setRemark(bean.getTableRemarks());
         }
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         content.append("/**\n" +
                 " *" +buildJavaConfig.getRemark()+" serverImpl"+
+                "\n *"+"@author "+autoCodeConfig.getGlobalConfig().getAuthor()+
+                "\n *"+"@Date "+dateFormat.format(date)+
                 "\n */\n");
 
         List<String> implement = buildJavaConfig.getImplement();

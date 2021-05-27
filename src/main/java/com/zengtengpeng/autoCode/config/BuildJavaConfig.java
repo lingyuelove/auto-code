@@ -36,6 +36,9 @@ public class BuildJavaConfig {
      */
     private String remark;
 
+
+
+
     /**
      * 是否使用默认的一些导入类,以及继承,实现
      */

@@ -20,10 +20,25 @@ public class GlobalConfig {
      * 生成代码的父包 如父包是com.zengtengpeng.test  controller将在com.zengtengpeng.test.controller下 bean 将在com.zengtengpeng.test.bean下 ,service,dao同理
      */
     private String parentPack;
+
+    private String parentType;
     /**
      * 生成代码的项目路径
      */
     private String parentPath;
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    /**
+     * 用户注释
+     */
+    private String author;
 
     /**
      * 是否覆盖生成 默认不覆盖
@@ -51,6 +66,15 @@ public class GlobalConfig {
      * bean的名称
      */
     private String packageBean="entity";
+
+    public String getParentType() {
+        return parentType;
+    }
+
+    public void setParentType(String parentType) {
+        this.parentType = parentType;
+    }
+
     /**
      * dao的名称
      */
@@ -63,7 +87,6 @@ public class GlobalConfig {
      * service的名称
      */
     private String packageService="service";
-
 
     /**
      * 是否启用代码生成器

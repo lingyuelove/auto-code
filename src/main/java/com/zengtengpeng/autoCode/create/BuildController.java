@@ -11,7 +11,9 @@ import com.zengtengpeng.autoCode.utils.MyStringUtils;
 import com.zengtengpeng.jdbc.bean.Bean;
 import com.zengtengpeng.jdbc.bean.BeanColumn;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ public interface BuildController {
 
     default BuildController before(AutoCodeConfig autoCodeConfig, BuildJavaConfig buildJavaConfig) {
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
-        MyStringUtils.append(buildJavaConfig.getContent(), "package %s.%s;", globalConfig.getParentPack(), globalConfig.getPackageController());
+        MyStringUtils.append(buildJavaConfig.getContent(), "package %s.%s.%s;", globalConfig.getParentPack(), globalConfig.getPackageController(),globalConfig.getParentType());
         return this;
     }
 
@@ -44,7 +46,7 @@ public interface BuildController {
             imports = new ArrayList<>();
         }
         if (buildJavaConfig.getDefaultRealize()) {
-            imports.add("javax.annotation.Resource");
+            imports.add("org.springframework.beans.factory.annotation.Autowired");
             imports.add("com.zengtengpeng.common.utils.ExcelUtils");
             imports.add("org.springframework.web.bind.annotation.RequestMapping");
             imports.add("org.springframework.web.bind.annotation.ResponseBody");
@@ -59,8 +61,8 @@ public interface BuildController {
                 imports.add("io.swagger.annotations.Api");
                 imports.add("io.swagger.annotations.ApiOperation");
             }
-            imports.add(bean.getParentPack()+"."+globalConfig.getPackageBean()+"."+bean.getTableName());
-            imports.add(bean.getParentPack()+"."+globalConfig.getPackageService()+"."+bean.getTableName()+globalConfig.getPackageServiceUp());
+            imports.add(bean.getParentPack()+"."+globalConfig.getPackageBean()+"."+globalConfig.getParentType()+"."+bean.getTableName());
+            imports.add(bean.getParentPack()+"."+globalConfig.getPackageService()+"."+globalConfig.getParentType()+"."+bean.getTableName()+globalConfig.getPackageServiceUp());
         }
         imports.forEach(t -> content.append("import " + t + ";\n"));
 
@@ -88,8 +90,12 @@ public interface BuildController {
         if(MyStringUtils.isEmpty(buildJavaConfig.getRemark())){
             buildJavaConfig.setRemark(bean.getTableRemarks());
         }
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         content.append("/**\n" +
                 " *" +buildJavaConfig.getRemark()+" controller"+
+                "\n *"+"@author "+autoCodeConfig.getGlobalConfig().getAuthor()+
+                "\n *"+"@Date "+dateFormat.format(date)+
                 "\n */\n");
 
         List<String> implement = buildJavaConfig.getImplement();
@@ -150,7 +156,7 @@ public interface BuildController {
             buildJavaField.setFiledType("private");
             buildJavaField.setFiledName(bean.getTableValue() + globalConfig.getPackageServiceUp());
             List<String> an = new ArrayList<>();
-            an.add("@Resource");
+            an.add("@Autowired");
             buildJavaField.setAnnotation(an);
             buildJavaFields.add(buildJavaField);
             buildJavaConfig.setBuildJavaFields(buildJavaFields);

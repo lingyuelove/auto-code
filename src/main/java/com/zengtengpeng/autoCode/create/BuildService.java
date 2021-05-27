@@ -7,7 +7,9 @@ import com.zengtengpeng.autoCode.utils.BuildUtils;
 import com.zengtengpeng.autoCode.utils.MyStringUtils;
 import com.zengtengpeng.jdbc.bean.Bean;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ public interface BuildService {
     default BuildService before(AutoCodeConfig autoCodeConfig, BuildJavaConfig buildJavaConfig) {
         StringBuffer content = buildJavaConfig.getContent();
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
-        MyStringUtils.append(content, "package %s.%s;", globalConfig.getParentPack(), globalConfig.getPackageService());
+        MyStringUtils.append(content, "package %s.%s.%s;", globalConfig.getParentPack(), globalConfig.getPackageService(), globalConfig.getParentType());
         return this;
     }
 
@@ -42,9 +44,9 @@ public interface BuildService {
             imports.add("com.zengtengpeng.common.service.BaseService");
             GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
             String parentPack = globalConfig.getParentPack();
-            imports.add(parentPack + "." + globalConfig.getPackageBean() + "." + bean.getTableName());
+            imports.add(parentPack + "." + globalConfig.getPackageBean()  + "." + globalConfig.getParentType()+ "." + bean.getTableName());
             String daoName = bean.getTableName() + globalConfig.getPackageDaoUp();
-            imports.add(parentPack + "." + globalConfig.getPackageDao() + "." + daoName);
+            imports.add(parentPack + "." + globalConfig.getPackageDao()+ "." + globalConfig.getParentType() + "." + daoName);
         }
         imports.forEach(t -> content.append("import " + t + ";\n"));
 
@@ -71,8 +73,12 @@ public interface BuildService {
         if(MyStringUtils.isEmpty(buildJavaConfig.getRemark())){
             buildJavaConfig.setRemark(bean.getTableRemarks());
         }
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         content.append("/**\n" +
                 " *" +buildJavaConfig.getRemark()+" service"+
+                "\n *"+"@author "+autoCodeConfig.getGlobalConfig().getAuthor()+
+                "\n *"+"@Date "+dateFormat.format(date)+
                 "\n */\n");
         if (buildJavaConfig.getDefaultRealize()) {
             String daoName = bean.getTableName() + MyStringUtils.firstUpperCase(autoCodeConfig.getGlobalConfig().getPackageDao());

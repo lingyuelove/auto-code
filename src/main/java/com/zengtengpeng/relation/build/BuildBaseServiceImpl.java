@@ -372,7 +372,7 @@ public interface BuildBaseServiceImpl {
 
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         String filePath = BuildUtils.packageJavaPath(globalConfig.getParentPathJavaSource(), primary.getExistParentPackage(),
-                globalConfig.getPackageService())+"/impl"+"/"+primary.getBeanName()+globalConfig.getPackageServiceUp()+"Impl"+".java";
+                globalConfig.getPackageService(),globalConfig.getParentType())+"/impl"+"/"+primary.getBeanName()+globalConfig.getPackageServiceUp()+"Impl"+".java";
         BuildUtils.addJavaCode(filePath,buildJavaMethods,buildJavaFields,imports);
     }
     /**
@@ -393,7 +393,7 @@ public interface BuildBaseServiceImpl {
 
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         String filePath = BuildUtils.packageJavaPath(globalConfig.getParentPathJavaSource(), foreign.getExistParentPackage(),
-                globalConfig.getPackageService()+"/impl")+"/"+foreign.getBeanName()+globalConfig.getPackageServiceUp()+"Impl"+".java";
+                globalConfig.getPackageService(),globalConfig.getParentType()+"/impl")+"/"+foreign.getBeanName()+globalConfig.getPackageServiceUp()+"Impl"+".java";
         BuildUtils.addJavaCode(filePath,buildJavaMethods,buildJavaFields,imports);
     }
 

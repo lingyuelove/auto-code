@@ -118,7 +118,7 @@ public interface BuildBaseBean {
 
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         String filePath = BuildUtils.packageJavaPath(globalConfig.getParentPathJavaSource(), primary.getExistParentPackage(),
-                globalConfig.getPackageBean())+"/"+primary.getBeanName()+".java";
+                globalConfig.getPackageBean(),globalConfig.getParentType())+"/"+primary.getBeanName()+".java";
         BuildUtils.addJavaCode(filePath,buildJavaMethods,buildJavaFields,imports);
     }
     /**
@@ -138,7 +138,7 @@ public interface BuildBaseBean {
 
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         String filePath = BuildUtils.packageJavaPath(globalConfig.getParentPathJavaSource(), foreign.getExistParentPackage(),
-                globalConfig.getPackageBean())+"/"+foreign.getBeanName()+".java";
+                globalConfig.getPackageBean(),globalConfig.getParentType())+"/"+foreign.getBeanName()+".java";
         BuildUtils.addJavaCode(filePath,buildJavaMethods,buildJavaFields,imports);
     }
 

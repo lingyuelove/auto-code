@@ -28,12 +28,13 @@ public interface BuildXml {
      */
     default BuildXml insert(AutoCodeConfig init,StringBuffer content) {
         Bean bean = init.getBean();
+        GlobalConfig globalConfig = init.getGlobalConfig();
         BeanColumn beanColumn = bean.getPrimaryKey().get(0);
         BuildXmlBean buildXmlBean=new BuildXmlBean();
         buildXmlBean.setXmlElementType(XmlElementType.insert);
         Map<String, String> attr=new LinkedHashMap<>();
-        attr.put("id","insert");
-        attr.put("keyColumn",beanColumn.getJdbcName());
+        attr.put("id","saveObject");
+        attr.put("parameterType",globalConfig.getParentPack()+"."+ globalConfig.getPackageBean()+"."+ globalConfig.getParentType()+"."+ bean.getTableName());
         attr.put("keyProperty",beanColumn.getBeanName());
         attr.put("useGeneratedKeys","true");
         buildXmlBean.setAttributes(attr);
@@ -70,7 +71,7 @@ public interface BuildXml {
         BuildXmlBean buildXmlBean=new BuildXmlBean();
         buildXmlBean.setXmlElementType(XmlElementType.delete);
         Map<String, String> attr=new LinkedHashMap<>();
-        attr.put("id","deleteByPrimaryKey");
+        attr.put("id","deleteObject");
         buildXmlBean.setAttributes(attr);
         StringBuffer sql=new StringBuffer();
 
@@ -90,11 +91,13 @@ public interface BuildXml {
      */
     default BuildXml update(AutoCodeConfig init,StringBuffer content) {
         Bean bean = init.getBean();
-
+        GlobalConfig globalConfig = init.getGlobalConfig();
         BuildXmlBean buildXmlBean=new BuildXmlBean();
         buildXmlBean.setXmlElementType(XmlElementType.update);
         Map<String, String> attr=new LinkedHashMap<>();
-        attr.put("id","update");
+        attr.put("id","updateObject");
+        attr.put("parameterType",globalConfig.getParentPack()+"."+ globalConfig.getPackageBean()+"."+ globalConfig.getParentType()+"."+ bean.getTableName());
+
         buildXmlBean.setAttributes(attr);
         StringBuffer sql=new StringBuffer();
 
@@ -131,7 +134,7 @@ public interface BuildXml {
         BuildXmlBean buildXmlBean=new BuildXmlBean();
         buildXmlBean.setXmlElementType(XmlElementType.select);
         Map<String, String> attr=new LinkedHashMap<>();
-        attr.put("id","selectByPrimaryKey");
+        attr.put("id","getObjectById");
         attr.put("resultMap","BaseResultMap");
         buildXmlBean.setAttributes(attr);
         StringBuffer sql=new StringBuffer();
@@ -215,9 +218,9 @@ public interface BuildXml {
         Bean bean = init.getBean();
         MyStringUtils.append(content, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\n" +
-                "<mapper namespace=\"%s.%s.%s%s\">\n", globalConfig.getParentPack(), globalConfig.getPackageDao(), bean.getTableName(), globalConfig.getPackageDaoUp());
+                "<mapper namespace=\"%s.%s.%s.%s%s\">\n", globalConfig.getParentPack(), globalConfig.getPackageDao(), globalConfig.getParentType(), bean.getTableName(), globalConfig.getPackageDaoUp());
 
-        MyStringUtils.append(content, "<resultMap id=\"BaseResultMap\" type=\"%s.%s.%s\">\n",1, globalConfig.getParentPack(), globalConfig.getPackageBean(),
+        MyStringUtils.append(content, "<resultMap id=\"BaseResultMap\" type=\"%s.%s.%s.%s\">\n",1, globalConfig.getParentPack(), globalConfig.getPackageBean(), globalConfig.getParentType(),
                 bean.getTableName());
 
         for (BeanColumn allColumn : bean.getAllColumns()) {

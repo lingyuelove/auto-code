@@ -188,19 +188,19 @@ public interface StartCode {
             String parentPath = globalConfig.getParentPathJavaSource();
 
 
-            BuildUtils.createJavaFile(parentPath, globalConfig.getParentPack(), globalConfig.getPackageController(),
+            BuildUtils.createJavaFile(parentPath, globalConfig.getParentPack(), globalConfig.getPackageController(),globalConfig.getParentType(),
                     bean.getTableName() + globalConfig.getPackageControllerUp(), controller, cover);
 
-            BuildUtils.createJavaFile(parentPath, globalConfig.getParentPack(), globalConfig.getPackageDao(),
+            BuildUtils.createJavaFile(parentPath, globalConfig.getParentPack(), globalConfig.getPackageDao(),globalConfig.getParentType(),
                     bean.getTableName() + globalConfig.getPackageDaoUp(), dao, cover);
 
-            BuildUtils.createJavaFile(parentPath, globalConfig.getParentPack(), globalConfig.getPackageService(),
+            BuildUtils.createJavaFile(parentPath, globalConfig.getParentPack(), globalConfig.getPackageService(),globalConfig.getParentType(),
                     bean.getTableName() + globalConfig.getPackageServiceUp(), server, cover);
 
-            BuildUtils.createJavaFile(parentPath, globalConfig.getParentPack(), globalConfig.getPackageService() + ".impl",
+            BuildUtils.createJavaFile(parentPath, globalConfig.getParentPack(), globalConfig.getPackageService(),globalConfig.getParentType() + ".impl",
                     bean.getTableName() + globalConfig.getPackageServiceUp() + "Impl", serviceImpl, cover);
 
-            BuildUtils.createJavaFile(parentPath, globalConfig.getParentPack(), globalConfig.getPackageBean(),
+            BuildUtils.createJavaFile(parentPath, globalConfig.getParentPack(), globalConfig.getPackageBean(),globalConfig.getParentType(),
                     bean.getTableName(), beans, cover);
 
             //自定义构建

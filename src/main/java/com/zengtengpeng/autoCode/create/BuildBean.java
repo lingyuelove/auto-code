@@ -12,10 +12,8 @@ import com.zengtengpeng.jdbc.bean.Bean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 生成bean
@@ -29,7 +27,7 @@ public interface BuildBean {
     default BuildBean before(AutoCodeConfig autoCodeConfig, BuildJavaConfig buildJavaConfig) {
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         StringBuffer content = buildJavaConfig.getContent();
-        MyStringUtils.append(content, "package %s.%s;", globalConfig.getParentPack(), globalConfig.getPackageBean());
+        MyStringUtils.append(content, "package %s.%s.%s;", globalConfig.getParentPack(), globalConfig.getPackageBean(), globalConfig.getParentType());
         return this;
     }
 
@@ -80,8 +78,12 @@ public interface BuildBean {
         if(MyStringUtils.isEmpty(buildJavaConfig.getRemark())){
             buildJavaConfig.setRemark(bean.getTableRemarks());
         }
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         content.append("/**\n" +
                 " *" +buildJavaConfig.getRemark()+" bean"+
+                "\n *"+"@author "+autoCodeConfig.getGlobalConfig().getAuthor()+
+                "\n *"+"@Date "+dateFormat.format(date)+
                 "\n */\n");
 
         List<String> implement = buildJavaConfig.getImplement();

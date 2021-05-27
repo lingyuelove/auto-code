@@ -122,13 +122,14 @@ public class BuildUtils {
      * @param parentPath 根路径
      * @param parentPack 父包
      * @param pack 包名
+     * @param parentTyp 包下的类
      * @param beanName 文件名称
      * @param context 内容
      * @param cover true覆盖生成 false不覆盖
      */
-    public static void createJavaFile(String parentPath, String parentPack, String pack, String beanName, String context, Boolean cover){
+    public static void createJavaFile(String parentPath, String parentPack, String pack,String parentTyp, String beanName, String context, Boolean cover){
 
-        File parentFile=new File(packageJavaPath(parentPath,parentPack,pack));
+        File parentFile=new File(packageJavaPath(parentPath,parentPack,pack,parentTyp));
         if (!parentFile.exists()){
             parentFile.mkdirs();
         }
@@ -148,12 +149,15 @@ public class BuildUtils {
      * @param pack
      * @return
      */
-    public static String packageJavaPath(String parentPath,String parentPack,String pack){
+    public static String packageJavaPath(String parentPath,String parentPack,String pack,String parentTyp){
         parentPack=parentPack.replace(".","/")+"/";
         if(!MyStringUtils.isEmpty(pack)){
             pack=pack.replace(".","/")+"/";
         }
-        return parentPath+"/"+parentPack+pack;
+        if(!MyStringUtils.isEmpty(parentTyp)){
+            pack=pack.replace(".","/")+"/";
+        }
+        return parentPath+"/"+parentPack+pack+parentTyp;
     }
 
     /**

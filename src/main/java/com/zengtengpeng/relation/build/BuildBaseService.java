@@ -187,7 +187,7 @@ public interface BuildBaseService {
         List<BuildJavaField> buildJavaFields = buildJavaConfig.getBuildJavaFields();
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         String filePath = BuildUtils.packageJavaPath(globalConfig.getParentPathJavaSource(), primary.getExistParentPackage(),
-                globalConfig.getPackageService())+"/"+primary.getBeanName()+globalConfig.getPackageServiceUp()+".java";
+                globalConfig.getPackageService(),globalConfig.getParentType())+"/"+primary.getBeanName()+globalConfig.getPackageServiceUp()+".java";
         BuildUtils.addJavaCode(filePath,buildJavaMethods,buildJavaFields,imports);
     }
     /**
@@ -206,7 +206,7 @@ public interface BuildBaseService {
         List<BuildJavaField> buildJavaFields = buildJavaConfig.getBuildJavaFields();
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         String filePath = BuildUtils.packageJavaPath(globalConfig.getParentPathJavaSource(), foreign.getExistParentPackage(),
-                globalConfig.getPackageService())+"/"+foreign.getBeanName()+globalConfig.getPackageServiceUp()+".java";
+                globalConfig.getPackageService(),globalConfig.getParentType())+"/"+foreign.getBeanName()+globalConfig.getPackageServiceUp()+".java";
         BuildUtils.addJavaCode(filePath,buildJavaMethods,buildJavaFields,imports);
     }
 

@@ -108,7 +108,7 @@ public interface BuildManyToManyController extends BuildBaseController {
 
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         String filePath = BuildUtils.packageJavaPath(globalConfig.getParentPathJavaSource(), primary.getExistParentPackage(),
-                globalConfig.getPackageController())+"/"+primary.getBeanName()+globalConfig.getPackageControllerUp()+".java";
+                globalConfig.getPackageController(),globalConfig.getParentType())+"/"+primary.getBeanName()+globalConfig.getPackageControllerUp()+".java";
         BuildUtils.addJavaCode(filePath,buildJavaMethods,buildJavaFields,imports);
     }
     /**
@@ -135,7 +135,7 @@ public interface BuildManyToManyController extends BuildBaseController {
         buildJavaFields.addAll(foreignFields(autoCodeConfig));
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         String filePath = BuildUtils.packageJavaPath(globalConfig.getParentPathJavaSource(), foreign.getExistParentPackage(),
-                globalConfig.getPackageController())+"/"+foreign.getBeanName()+globalConfig.getPackageControllerUp()+".java";
+                globalConfig.getPackageController(),globalConfig.getParentType())+"/"+foreign.getBeanName()+globalConfig.getPackageControllerUp()+".java";
         BuildUtils.addJavaCode(filePath,buildJavaMethods,buildJavaFields,imports);
     }
 

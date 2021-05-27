@@ -241,8 +241,8 @@ public interface BuildBaseController {
         RelationConfig relationConfig = globalConfig.getRelationConfig();
         RelationTable primary = relationConfig.getPrimary();
         List<String> imports=new ArrayList<>();
-        imports.add(primary.getExistParentPackage()+"."+globalConfig.getPackageService()+"."+primary.getBeanName()+globalConfig.getPackageServiceUp());
-        imports.add(primary.getExistParentPackage()+"."+globalConfig.getPackageBean()+"."+primary.getBeanName());
+        imports.add(primary.getExistParentPackage()+"."+globalConfig.getPackageService()+"."+globalConfig.getParentType()+"."+primary.getBeanName()+globalConfig.getPackageServiceUp());
+        imports.add(primary.getExistParentPackage()+"."+globalConfig.getPackageBean()+"."+globalConfig.getParentType()+"."+primary.getBeanName());
         imports.add("java.util.ArrayList");
         return imports;
     }
@@ -259,7 +259,7 @@ public interface BuildBaseController {
         List<BuildJavaField> list = new ArrayList<>();
         BuildJavaField buildJavaField = new BuildJavaField();
         List<String> an = new ArrayList<>();
-        an.add("@Resource");
+        an.add("@Autowired");
         buildJavaField.setAnnotation(an);
         buildJavaField.setRemark(primary.getRemark());
         buildJavaField.setFiledName(primary.getBeanNameLower() + globalConfig.getPackageServiceUp());
@@ -280,7 +280,7 @@ public interface BuildBaseController {
         List<BuildJavaField> list = new ArrayList<>();
         BuildJavaField buildJavaField = new BuildJavaField();
         List<String> an = new ArrayList<>();
-        an.add("@Resource");
+        an.add("@Autowired");
         buildJavaField.setAnnotation(an);
         buildJavaField.setRemark(foreign.getRemark());
         buildJavaField.setFiledName(foreign.getBeanNameLower() + globalConfig.getPackageServiceUp());
@@ -331,7 +331,7 @@ public interface BuildBaseController {
 
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         String filePath = BuildUtils.packageJavaPath(globalConfig.getParentPathJavaSource(), primary.getExistParentPackage(),
-                globalConfig.getPackageController())+"/"+primary.getBeanName()+globalConfig.getPackageControllerUp()+".java";
+                globalConfig.getPackageController(),globalConfig.getParentType())+"/"+primary.getBeanName()+globalConfig.getPackageControllerUp()+".java";
         BuildUtils.addJavaCode(filePath,buildJavaMethods,buildJavaFields,imports);
     }
     /**
@@ -357,7 +357,7 @@ public interface BuildBaseController {
         buildJavaFields.addAll(foreignFields(autoCodeConfig));
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         String filePath = BuildUtils.packageJavaPath(globalConfig.getParentPathJavaSource(), foreign.getExistParentPackage(),
-                globalConfig.getPackageController())+"/"+foreign.getBeanName()+globalConfig.getPackageControllerUp()+".java";
+                globalConfig.getPackageController(),globalConfig.getParentType())+"/"+foreign.getBeanName()+globalConfig.getPackageControllerUp()+".java";
         BuildUtils.addJavaCode(filePath,buildJavaMethods,buildJavaFields,imports);
     }
 

@@ -7,11 +7,14 @@ import com.zengtengpeng.autoCode.utils.BuildUtils;
 import com.zengtengpeng.autoCode.utils.MyStringUtils;
 import com.zengtengpeng.jdbc.bean.Bean;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * 生成dao
+ * @author EDZ
  */
 @FunctionalInterface
 public interface BuildDao {
@@ -19,7 +22,7 @@ public interface BuildDao {
     default BuildDao before(AutoCodeConfig autoCodeConfig,BuildJavaConfig buildJavaConfig){
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         StringBuffer content = buildJavaConfig.getContent();
-        MyStringUtils.append(content,"package %s.%s;",globalConfig.getParentPack(),globalConfig.getPackageDao());
+        MyStringUtils.append(content,"package %s.%s.%s;",globalConfig.getParentPack(),globalConfig.getPackageDao(),globalConfig.getParentType());
         return this;
     }
 
@@ -39,7 +42,7 @@ public interface BuildDao {
             imports.add("com.zengtengpeng.common.dao.BaseDao");
             imports.add("org.apache.ibatis.annotations.Mapper");
             GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
-            imports.add(globalConfig.getParentPack()+"."+globalConfig.getPackageBean()+"."+bean.getTableName());
+            imports.add(globalConfig.getParentPack()+"."+globalConfig.getPackageBean()+"."+globalConfig.getParentType()+"."+bean.getTableName());
         }
         StringBuffer content = buildJavaConfig.getContent();
         imports.forEach(t->content.append("import "+t+";\n"));
@@ -69,8 +72,12 @@ public interface BuildDao {
             buildJavaConfig.setRemark(bean.getTableRemarks());
         }
         StringBuffer content = buildJavaConfig.getContent();
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         content.append("/**\n" +
                 " *" +buildJavaConfig.getRemark()+" dao"+
+                "\n *"+"@author "+autoCodeConfig.getGlobalConfig().getAuthor()+
+                "\n *"+"@Date "+dateFormat.format(date)+
                 "\n */\n");
         extend.forEach(t-> s.append(t+","));
         List<String> annotations = buildJavaConfig.getAnnotations();

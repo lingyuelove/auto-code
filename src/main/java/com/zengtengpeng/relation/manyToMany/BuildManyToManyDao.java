@@ -149,7 +149,7 @@ public interface BuildManyToManyDao extends BuildBaseDao {
         List<BuildJavaField> buildJavaFields = buildJavaConfig.getBuildJavaFields();
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         String filePath = BuildUtils.packageJavaPath(globalConfig.getParentPathJavaSource(), primary.getExistParentPackage(),
-                globalConfig.getPackageDao())+"/"+primary.getBeanName()+globalConfig.getPackageDaoUp()+".java";
+                globalConfig.getPackageDao(),globalConfig.getParentType())+"/"+primary.getBeanName()+globalConfig.getPackageDaoUp()+".java";
         BuildUtils.addJavaCode(filePath,buildJavaMethods,buildJavaFields,imports);
     }
     /**
@@ -169,7 +169,7 @@ public interface BuildManyToManyDao extends BuildBaseDao {
         List<BuildJavaField> buildJavaFields = buildJavaConfig.getBuildJavaFields();
         GlobalConfig globalConfig = autoCodeConfig.getGlobalConfig();
         String filePath = BuildUtils.packageJavaPath(globalConfig.getParentPathJavaSource(), foreign.getExistParentPackage(),
-                globalConfig.getPackageDao())+"/"+foreign.getBeanName()+globalConfig.getPackageDaoUp()+".java";
+                globalConfig.getPackageDao(),globalConfig.getParentType())+"/"+foreign.getBeanName()+globalConfig.getPackageDaoUp()+".java";
         BuildUtils.addJavaCode(filePath,buildJavaMethods,buildJavaFields,imports);
     }
 
