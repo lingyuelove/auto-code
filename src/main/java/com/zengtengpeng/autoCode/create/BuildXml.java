@@ -249,6 +249,14 @@ public interface BuildXml {
             }
         }
         MyStringUtils.append(content, "</resultMap>\n", 1);
+        MyStringUtils.append(content, "<sql id=\"Base_Column_List\">", 1);
+        for (BeanColumn allColumn : bean.getAllColumns()) {
+
+            MyStringUtils.append(content, "%s,", 2, allColumn.getJdbcName());
+        }
+//        StringBuffer sql = new StringBuffer();
+//        MyStringUtils.append(sql, "sql", 2);
+        MyStringUtils.append(content, "</sql>\n", 1);
         return this;
     }
 
